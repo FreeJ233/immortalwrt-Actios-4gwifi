@@ -16,19 +16,19 @@ on:
         description: ' ↓ 支持多款型号 手动选择要编译的机型 ↓ '
         type: choice
         options:
-          #- jz02v10
-          #- ufi001c
-          #- ufi001b
           - ufi003
-          #- ufi103s
-          #- qrzl903
-          #- w001
-          #- uz801
-          #- mf32
-          #- mf601
-          #- wf2
-          #- sp970v11
-          #- sp970v10
+          - ufi001c
+          - ufi001b
+          - ufi103s
+          - jz02v10
+          - qrzl903
+          - w001
+          - uz801
+          - mf32
+          - mf601
+          - wf2
+          - sp970v11
+          - sp970v10
         default: ufi003
         required: true
       extra_packages:
