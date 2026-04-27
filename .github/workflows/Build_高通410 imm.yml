@@ -5,17 +5,6 @@ name: Build_imm_高通410系列
 
 on:
   repository_dispatch:
-  workflow_call:
-    inputs:
-      profile:
-        description: '编译机型'
-        required: true
-        type: string
-      extra_packages:
-        description: '额外包名'
-        required: false
-        default: ''
-        type: string
   workflow_dispatch:
     inputs:
       ssh:
@@ -42,6 +31,14 @@ on:
           - sp970v10
         default: ufi003
         required: true
+      upstream:
+        description: ' ↓ 选择上游源码仓库 ↓ '
+        type: choice
+        options:
+          - lkiuyu/immortalwrt
+          - xuxin1955/immortalwrt
+        default: lkiuyu/immortalwrt
+        required: true
       extra_packages:
         description: ' ↓ 输入额外包名（逗号或空格分隔，留空则不添加任何额外包）↓ '
         required: false
@@ -49,10 +46,10 @@ on:
         type: string
 
 env:
-  REPO_URL: https://github.com/lkiuyu/immortalwrt
+  REPO_URL: https://github.com/${{ github.event.inputs.upstream }}
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: config/ufi003.config
+  CONFIG_FILE: ${{ format('config/{0}.config', github.event.inputs.profile) }}
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
@@ -155,28 +152,9 @@ jobs:
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a -f
 
-    - name: Fix libmbim missing glib2 dependency
-      run: |
-        LIBMBIM_MK="openwrt/feeds/packages/libs/libmbim/Makefile"
-        if [ -f "$LIBMBIM_MK" ]; then
-          # 检查是否已有 glib2 依赖
-          if ! grep -q "glib2" "$LIBMBIM_MK"; then
-            echo "Patching libmbim Makefile to add glib2 dependency..."
-            sed -i 's/DEPENDS:=/DEPENDS:=+glib2 /' "$LIBMBIM_MK"
-            echo "Patch applied:"
-            grep "DEPENDS" "$LIBMBIM_MK"
-          else
-            echo "libmbim already has glib2 dependency, no patch needed."
-          fi
-        else
-          echo "libmbim Makefile not found, skipping patch."
-        fi
-
     - name: Load custom configuration
       run: |
         [ -e files ] && mv files openwrt/files
-        CONFIG_FILE="config/${{ inputs.profile }}.config"
-        echo "Using config: $CONFIG_FILE"
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
         chmod +x $DIY_P2_SH
         cd openwrt
