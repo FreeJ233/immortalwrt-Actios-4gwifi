@@ -5,6 +5,17 @@ name: Build_imm_高通410系列
 
 on:
   repository_dispatch:
+  workflow_call:
+    inputs:
+      profile:
+        description: '编译机型'
+        required: true
+        type: string
+      extra_packages:
+        description: '额外包名'
+        required: false
+        default: ''
+        type: string
   workflow_dispatch:
     inputs:
       ssh:
