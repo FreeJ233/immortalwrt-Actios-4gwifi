@@ -33,9 +33,9 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
 
     - name: Clone source code
-      working-directory: /mnt
       run: |
-        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        sudo chmod 777 /mnt
+        git clone $REPO_URL -b $REPO_BRANCH /mnt/openwrt
         ln -sf /mnt/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: Update & Install feeds
