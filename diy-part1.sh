@@ -24,5 +24,7 @@
 # 调试
 # sed -i 's|src-git-full openstick https://github.com/lkiuyu/openstick-feeds.git|src-git-full openstick https://github.com/xuxin1955/openstick-feeds|g' feeds.conf.default
 
+#添加dade
+git clone https://github.com/QiuSimons/luci-app-daed package/dae
 
 
