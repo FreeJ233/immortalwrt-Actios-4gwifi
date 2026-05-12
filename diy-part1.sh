@@ -11,6 +11,7 @@
 
 # 添加第三方 feed 源（small-package 包含 openclash/passwall/ssr-plus 等常用插件）
 # echo 'src-git smpackage https://github.com/kenzok8/small-package' >> feeds.conf.default
+sed -i '$a src-git smpackage https://github.com/kenzok8/small-package' feeds.conf.default
 # 添加第三方源，下面 iStore 应用商店了，然后在编译时候包输入luci-app-store
 # echo 'src-git store https://github.com/linkease/istore.git;main' >> feeds.conf.default
 
@@ -24,5 +25,7 @@
 # 调试
 # sed -i 's|src-git-full openstick https://github.com/lkiuyu/openstick-feeds.git|src-git-full openstick https://github.com/xuxin1955/openstick-feeds|g' feeds.conf.default
 
+# 添加dade
+# git clone https://github.com/QiuSimons/luci-app-daed package/dae
 
 

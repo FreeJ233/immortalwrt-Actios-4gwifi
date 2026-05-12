@@ -29,13 +29,14 @@ on:
           - wf2
           - sp970v11
           - sp970v10
-        default: ufi003
+        default: w001
         required: true
       upstream:
         description: ' ↓ 选择上游源码仓库 ↓ '
         type: choice
         options:
           - lkiuyu/immortalwrt
+          - xuxin1955/immortalwrt
         default: lkiuyu/immortalwrt
         required: true
       custom_hash:
@@ -46,7 +47,7 @@ on:
       extra_packages:
         description: ' ↓ 输入额外包名（逗号或空格分隔，留空则不添加任何额外包）↓ '
         required: false
-        default: ''
+        default: 'luci-app-daed,luci-app-ttyd'
         type: string
 
 env:
@@ -93,7 +94,8 @@ jobs:
       run: |
         sudo -E apt-get -y update
         sudo -E apt-get -y install $(curl -fsSL https://raw.githubusercontent.com/xuxin1955/depend_ubuntu2204_openwrt/refs/heads/main/depend_ubuntu2204_openwrt)
-
+        sudo -E apt-get -y install dwarves
+        
     - name: mkbootimg build
       run: |
         wget https://github.com/xuxin1955/depend_ubuntu2204_openwrt/releases/download/ubuntu_26.04_LTS_mkbootimg/mkbootimg_34.0.5-12build1_all.deb
